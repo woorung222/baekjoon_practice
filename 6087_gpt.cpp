@@ -70,9 +70,55 @@ int main(){
     int y = cur.y; //현재 y
     int x = cur.x; //dd
     int dir = cur.dir; // dd
-    
+    int curCost = dist[y][x][dir]; // 현재 최소 cost. 나머지는 INF로 채워져있음
+
+    //다음 방향 후보 3개
+    int ndirs[3];
+    ndirs[0] = dir; //직진
+    ndirs[1] = leftDir(dir); //left
+    ndirs[2] = rightDir(dir); //right
+
+    for (int i = 0; i < 3; i++){
+        int ndir = ndirs[i]; // 어느 방향으로 나아갈지 결정(i가 3개니까 ㅇㅇ)
+        int ny = y + dy[ndir]; // y 방향 미리 세팅해둔대로 증가
+        int nx = x + dx[ndir]; // x 방향 미리 세팅해둔대로 증가
+
+        if (ny < 0 || ny >= H || nx < 0 || nx >= W){
+            continue;
+        }
+        if(grid[ny][nx] == '*'){
+            continue;
+        }
+
+        int addCost; //거울 추가 여부
+        if (ndir == dir ){
+            addCost = 0;
+        }
+        else addCost = 1; //위치 바뀌면 +1
+
+        int nextCost = curCost + addCost;
+
+        if (nextCost < dist[ny][nx][ndir]){
+            dist[ny][nx][ndir] = nextCost; // 더 좋은 경로면 이걸로 변경
+
+            if(addCost == 0){
+                dq.push_front({ny,nx,ndir}); //addCost 가 0이면 앞에 추가
+            }
+            else {
+                dq.push_back({ny,nx,ndir}); // addcost 가 1이면 뒤에 추가
+            }
+        }
+
+    }
 
    }
+
+   int answer = INF;
+   for (int dir = 0; dir < 4; dir ++){
+    answer = min(answer,dist[ey][ex][dir]);
+   }
+   cout << answer;
+   return 0;
 
 
 }
