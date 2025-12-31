@@ -1,11 +1,12 @@
 #include <iostream>
 #include <vector>
+#include <queue>
 
 using namespace std;
 
 struct edge{
     int to;
-    int amout;
+    int amount;
 };
 
 struct storage{
@@ -43,4 +44,32 @@ int main(){
     vector<long long> needCount(N+1,0); //최종 정답 저장 벡터
     needCount[N] = 1; // 완제품은 무조건 1 고정
     
+    queue<int> q;
+
+    //완제품부터 사용할거니까 얘네 먼저 push
+    for(int i = 1; i <= N ; i++){
+        if(indeg[i] == 0) q.push(i);
+    }
+    while(!q.empty()){
+        int x = q.front();
+        q.pop();
+
+        for(int i = 0; i < (int)graph[x].size();i++){
+            int y = graph[x][i].to;
+            int k = graph[x][i].amount;
+
+            needCount[y] += needCount[x] * (long long)k;
+
+            indeg[y] --;
+            if (indeg[y] == 0) q.push(y);
+        }
+    }
+
+    for(int i = 1; i <= N; i ++){
+        if (ans[i].isBasic == true) {
+            cout <<i << " "<< needCount[i] << "\n";
+        }
+    }
+    
+    return 0;
 }
