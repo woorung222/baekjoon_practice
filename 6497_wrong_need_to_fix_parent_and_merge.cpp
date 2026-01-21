@@ -31,24 +31,10 @@ int main(){
         cin >> waylst[i].x >> waylst[i].y >> waylst[i].length;
         set(waylst[i]);
     }
-    
-    int tmp;
-    cin >> tmp >> tmp;
-
-       //---
-    cout <<"\n\n";
-    for (int i = 0; i < way; i ++){
-        cout << waylst[i].length<< " ";
-    }
-    //--
+    int end1,end2;
+    cin >>end1>>end2;
 
     sort(waylst.begin(),waylst.end(),cmp);
-    //---
-    cout <<"\n\n";
-    for (int i = 0; i < way; i ++){
-        cout << waylst[i].length<< " ";
-    }
-    //--
 
     int mark = 0;
     int ans = 0;
@@ -57,9 +43,8 @@ int main(){
             continue;
         }
         mark ++;
-        parentlst[waylst[i].y] = waylst[i].x;
+        parentlst[waylst[i].y] = parentlst[waylst[i].x];
         ans += waylst[i].length;
-        cout << i << " " << ans << "\n";
         if (mark > house) break;
     }
     cout << ans;
